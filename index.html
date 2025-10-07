@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Muhamad Andri Rizki | Statistician & Data Scientist</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @font-face {
+            font-family: 'JetBrains Mono';
+            src: url('https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff2/JetBrainsMono-Regular.woff2') format('woff2');
+        }
+        body { font-family: 'JetBrains Mono', monospace; cursor: none; background-color: #010A13; }
+        .animate-fadeIn { animation: fadeIn 1s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- Efek Glassmorphism --- */
+        .glassmorphic-card {
+            background: rgba(20, 30, 40, 0.55);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 180, 216, 0.2);
+        }
+
+        /* --- Custom Cursor --- */
+        .custom-cursor .dot { position: fixed; width: 8px; height: 8px; background-color: #00B4D8; border-radius: 50%; pointer-events: none; transform: translate(-50%, -50%); z-index: 10000; transition: transform 0.1s ease-out; }
+        .custom-cursor .circle { position: fixed; width: 40px; height: 40px; border: 1px solid #00B4D8; border-radius: 50%; pointer-events: none; transform: translate(-50%, -50%); z-index: 10000; transition: all 0.2s ease-out; }
+        .custom-cursor.hover .circle { transform: translate(-50%, -50%) scale(1.5); opacity: 0.5; }
+
+        /* --- Terminal Kontak --- */
+        #terminal { height: 450px; }
+        #terminal-output .prompt { color: #00B4D8; }
+        #terminal-output .command-output { color: #E0E0E0; }
+        #terminal-input-line { display: flex; }
+        #terminal-input { background: transparent; border: none; color: #E0E0E0; flex-grow: 1; }
+        #terminal-input:focus { outline: none; }
+        .cursor { width: 10px; height: 1.2em; background: #00B4D8; display: inline-block; animation: blink 1s steps(1) infinite; }
+        @keyframes blink { 50% { background: transparent; } }
+
+        /* --- Efek Lainnya --- */
+        .preloader { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: #010A13; z-index: 9999; display: flex; align-items: center; justify-content: center; transition: opacity 0.5s ease, visibility 0.5s ease; }
+        .preloader.loaded { opacity: 0; visibility: hidden; }
+        .loader-text span { display: inline-block; animation: bounce 1.6s infinite; }
+        @keyframes bounce { 0%,100% { transform: translateY(0); } 40% { transform: translateY(-20px); } }
+        nav.scrolled { position: fixed; top: 0; left: 0; right: 0; background-color: rgba(1, 10, 19, 0.7); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(0, 180, 216, 0.2); animation: slideDown 0.5s ease-out; }
+        @keyframes slideDown { from { transform: translateY(-100%); } to { transform: translateY(0); } }
+        .binary-digit { position: absolute; color: rgba(0, 255, 255, 0.5); font-family: 'Courier New', monospace; font-size: 14px; user-select: none; animation: binaryRain 5s linear infinite; text-shadow: 0 0 8px rgba(0, 240, 255, 0.5); }
+        @keyframes binaryRain { 0% { transform: translateY(-100px); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateY(100vh); opacity: 0; } }
+        .interactive-card { transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; }
+        .interactive-card:hover { transform: translateY(-8px); box-shadow: 0 0 30px rgba(0, 180, 216, 0.4); border-color: rgba(0, 180, 216, 0.8); }
+        .timeline-dot { box-shadow: 0 0 0 4px rgba(0, 180, 216, 0.3); animation: pulse 2.5s infinite; }
+        @keyframes pulse { 50% { box-shadow: 0 0 0 8px rgba(0, 180, 216, 0); } }
+        .magnetic-icon { transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+    </style>
+</head>
+<body class="bg-black text-white font-mono">
+    
+    <div class="preloader"><div class="loader-text text-2xl text-cyan-400"><span style="animation-delay: 0.1s;">L</span><span style="animation-delay: 0.2s;">O</span><span style="animation-delay: 0.3s;">A</span><span style="animation-delay: 0.4s;">D</span><span style="animation-delay: 0.5s;">I</span><span style="animation-delay: 0.6s;">N</span><span style="animation-delay: 0.7s;">G</span><span style="animation-delay: 0.8s;">...</span></div></div>
+    <div class="custom-cursor"><div class="dot"></div><div class="circle"></div></div>
+    <div id="vanta-bg" class="fixed inset-0 z-0"></div>
+    <div id="binaryRainContainer" class="fixed inset-0 overflow-hidden z-10 pointer-events-none"></div>
+    
+    <div class="relative z-20">
+        <nav id="navbar" class="py-6 transition-all duration-300 z-50">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center"><div class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-600">ANDRI<span class="text-white">RIZKI</span></div><ul class="hidden md:flex space-x-8"><li><a href="#about" class="hover:text-cyan-400 transition">About</a></li><li><a href="#experience" class="hover:text-cyan-400 transition">Experience</a></li><li><a href="#skills" class="hover:text-cyan-400 transition">Skills</a></li><li><a href="#projects" class="hover:text-cyan-400 transition">Projects</a></li><li><a href="#contact" class="hover:text-cyan-400 transition">Contact</a></li></ul></div>
+        </nav>
+
+        <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <section class="min-h-screen flex items-center pt-16">
+                 <div class="w-full"><div class="text-cyan-400 mb-4 flex items-center"><div class="w-4 h-4 bg-cyan-400 mr-2 animate-pulse"></div><span class="font-mono">STATISTICIAN & DATA SCIENTIST</span></div><h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight font-mono">Muhamad Andri Rizki</h1><p class="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl font-mono"><span id="typing-effect"></span></p><a href="#experience" class="px-8 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-md font-medium hover:opacity-90 transition flex items-center w-max"><span>Explore My Work</span><i data-feather="chevron-down" class="ml-2 w-5 h-5 animate-bounce"></i></a></div>
+            </section>
+
+            <section id="about" class="py-20">
+                <div class="flex flex-col md:flex-row items-center"><div class="w-full md:w-1/2 mb-10 md:mb-0 md:pr-10"><div class="bg-gradient-to-br from-cyan-500/20 to-blue-600/20 p-1 mx-auto w-64 h-64 md:w-80 md:h-80 transition-all duration-300 ease-in-out hover:scale-105" style="clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);"><img src="https://i.ibb.co/qDQKQ26/profile-pic.png" alt="Muhamad Andri Rizki" class="w-full h-full object-cover" style="clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);"></div></div><div class="w-full md:w-1/2"><h2 class="text-3xl md:text-4xl font-bold mb-6 font-mono"><span class="text-cyan-400">0x01</span> About Me</h2><p class="text-gray-300 mb-6 font-mono">Seorang ahli statistik dengan pengalaman lebih dari 2 tahun dalam data mining, analisis, engineering, sains, dan visualisasi. Mahir dalam Python, SQL, R, Power BI, dan Tableau, saya membangun solusi data dan model AI untuk mendukung pengambilan keputusan yang lebih cerdas.</p><p class="text-gray-300 mb-6 font-mono">Pekerjaan saya didorong oleh pola pikir analitis yang kuat dan pengetahuan interdisipliner yang luas di berbagai domain sosial, ekonomi, dan teknologi.</p><a href="#" class="inline-flex items-center text-cyan-400 hover:text-cyan-300"><span>Download Full CV</span><i data-feather="download" class="ml-2 w-4 h-4"></i></a></div></div>
+            </section>
+
+            <section id="experience" class="py-20">
+                 <h2 class="text-3xl md:text-4xl font-bold mb-16 text-center"><span class="text-cyan-400">~</span> Work Experience <span class="text-cyan-400">~</span></h2>
+                <div class="max-w-3xl mx-auto"><div class="relative"><div class="absolute left-4 top-0 h-full w-0.5 bg-cyan-400/30"></div><div class="relative pl-12 pb-12"><div class="absolute left-0 top-1 w-8 h-8 bg-black border-2 border-cyan-400 rounded-full flex items-center justify-center"><div class="w-4 h-4 bg-cyan-400 rounded-full timeline-dot"></div></div><p class="text-cyan-400 text-sm font-semibold">Juli 2024 - Saat ini</p><h3 class="text-xl font-bold mt-1">Process & Tools Specialist</h3><p class="text-gray-400 mb-3">PT, TEMANS</p><ul class="list-disc list-inside text-gray-300 space-y-1"><li>Membuat laporan dasbor menggunakan Power BI.</li><li>Memberikan pelatihan tentang cara menggunakan alat AI.</li><li>Mengembangkan dan mengotomatisasi sistem dokumen menggunakan AI.</li></ul></div><div class="relative pl-12 pb-12"><div class="absolute left-0 top-1 w-8 h-8 bg-black border-2 border-cyan-400 rounded-full flex items-center justify-center"><div class="w-4 h-4 bg-cyan-400 rounded-full timeline-dot"></div></div><p class="text-cyan-400 text-sm font-semibold">Januari 2023 - Saat ini</p><h3 class="text-xl font-bold mt-1">Freelancer Data</h3><p class="text-gray-400 mb-3">FASTWORK</p><ul class="list-disc list-inside text-gray-300 space-y-1"><li>Mengerjakan proyek Analisis Sentimen, Prediksi & Peramalan, dan SVM.</li></ul></div></div></div>
+            </section>
+
+            <section id="skills" class="py-20">
+                <h2 class="text-3xl md:text-4xl font-bold mb-16 text-center"><span class="text-cyan-400">{"</"}</span> Skills Visualization <span class="text-cyan-400">{">"}</span></h2>
+                <div class="glassmorphic-card p-4 sm:p-6 rounded-lg max-w-3xl mx-auto"><canvas id="skillsChart"></canvas></div>
+            </section>
+
+            <section id="projects" class="py-20">
+                <h2 class="text-3xl md:text-4xl font-bold mb-6"><span class="text-cyan-400">$</span> Notable Projects</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8"><div class="glassmorphic-card rounded-lg overflow-hidden interactive-card"><div class="h-48 bg-black/20 flex items-center justify-center"><i data-feather="message-circle" class="w-16 h-16 text-cyan-400"></i></div><div class="p-6"><h3 class="text-xl font-bold">Sentiment Analysis Engine</h3><p class="text-gray-400 my-4">Menganalisis ulasan pelanggan untuk mengukur sentimen publik dan memberikan wawasan untuk peningkatan produk.</p><div class="flex flex-wrap gap-2"><span class="text-xs bg-gray-800 px-2 py-1 rounded">Python</span><span class="text-xs bg-gray-800 px-2 py-1 rounded">NLTK</span></div></div></div><div class="glassmorphic-card rounded-lg overflow-hidden interactive-card"><div class="h-48 bg-black/20 flex items-center justify-center"><i data-feather="trending-up" class="w-16 h-16 text-cyan-400"></i></div><div class="p-6"><h3 class="text-xl font-bold">Sales Forecasting Model</h3><p class="text-gray-400 my-4">Membangun model peramalan deret waktu untuk memprediksi penjualan bulanan, membantu optimasi inventaris.</p><div class="flex flex-wrap gap-2"><span class="text-xs bg-gray-800 px-2 py-1 rounded">R</span><span class="text-xs bg-gray-800 px-2 py-1 rounded">Prophet</span></div></div></div></div>
+            </section>
+            
+            <section id="contact" class="py-20">
+                <h2 class="text-3xl md:text-4xl font-bold mb-16 text-center"><span class="text-cyan-400">./</span>contact<span class="text-cyan-400">.sh</span></h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16 max-w-4xl mx-auto">
+                    <div class="glassmorphic-card p-6 rounded-lg text-center interactive-card">
+                        <i data-feather="mail" class="w-10 h-10 text-cyan-400 mx-auto mb-4"></i>
+                        <h3 class="text-lg font-semibold mb-1">Email</h3>
+                        <a href="mailto:andririzkill@gmail.com" class="text-gray-400 hover:text-cyan-300 break-all">andririzkill@gmail.com</a>
+                    </div>
+                    <div class="glassmorphic-card p-6 rounded-lg text-center interactive-card">
+                        <i data-feather="phone" class="w-10 h-10 text-cyan-400 mx-auto mb-4"></i>
+                        <h3 class="text-lg font-semibold mb-1">Phone</h3>
+                        <a href="https://wa.me/6282246008821" target="_blank" class="text-gray-400 hover:text-cyan-300">+62 822-4600-8821</a>
+                    </div>
+                    <div class="glassmorphic-card p-6 rounded-lg text-center interactive-card">
+                        <i data-feather="map-pin" class="w-10 h-10 text-cyan-400 mx-auto mb-4"></i>
+                        <h3 class="text-lg font-semibold mb-1">Location</h3>
+                        <p class="text-gray-400">Tebet, Jakarta Selatan</p>
+                    </div>
+                </div>
+
+                <div id="terminal" class="glassmorphic-card p-4 sm:p-6 rounded-lg max-w-4xl mx-auto overflow-y-auto" onclick="document.getElementById('terminal-input').focus();">
+                    <div id="terminal-output"></div>
+                    <div id="terminal-input-line">
+                        <span class="prompt">guest@andririzki.dev:~$ </span>
+                        <input type="text" id="terminal-input" class="ml-2" autofocus autocomplete="off">
+                        <div class="cursor"></div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="py-12 border-t border-cyan-400/10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <p class="text-gray-400 italic text-lg mb-8 max-w-2xl mx-auto">"Smart data isn’t about zero error — it’s about real-world impact."</p>
+                <div class="flex justify-center space-x-8 mb-8">
+                    <a href="https://www.linkedin.com/in/muhamad-andri-rizki-a7a394296" target="_blank" class="magnetic-icon"><i data-feather="linkedin" class="w-7 h-7 text-gray-400 hover:text-cyan-400 transition"></i></a>
+                    <a href="#" class="magnetic-icon"><i data-feather="github" class="w-7 h-7 text-gray-400 hover:text-cyan-400 transition"></i></a>
+                </div>
+                <p class="text-gray-600 text-sm">© 2025 Muhamad Andri Rizki. All algorithms optimized.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const preloader = document.querySelector('.preloader');
+            window.onload = () => { preloader.classList.add('loaded'); };
+
+            feather.replace();
+            VANTA.NET({ el: "#vanta-bg", mouseControls: true, touchControls: true, gyroControls: false, minHeight: 200.00, minWidth: 200.00, scale: 1.00, scaleMobile: 1.00, color: 0x00B4D8, backgroundColor: 0x010A13, points: 12.00, maxDistance: 20.00, spacing: 15.00, showDots: false });
+            
+            createBinaryRain();
+            new Typed('#typing-effect', { strings: ['Transforming complex data into clear decisions.', 'Building intelligent AI models for real-world impact.'], typeSpeed: 50, backSpeed: 25, backDelay: 2000, loop: true });
+            
+            setupScrollObserver();
+            setupSmoothScrolling();
+            setupStickyNav();
+            setupCustomCursor();
+            createSkillsChart();
+            setupTerminal();
+            setupMagneticIcons();
+        });
+
+        function createBinaryRain() {
+            const container = document.getElementById('binaryRainContainer');
+            if (!container) return;
+            const count = 150;
+            for (let i = 0; i < count; i++) {
+                const digit = document.createElement('div');
+                digit.className = 'binary-digit';
+                digit.textContent = Math.round(Math.random());
+                digit.style.left = Math.random() * 100 + 'vw';
+                digit.style.animationDelay = Math.random() * 8 + 's';
+                digit.style.animationDuration = 3 + Math.random() * 7 + 's';
+                container.appendChild(digit);
+            }
+        }
+
+        function setupScrollObserver() {
+            const observer = new IntersectionObserver((entries) => entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('animate-fadeIn');
+            }), { threshold: 0.1 });
+            document.querySelectorAll('section').forEach(section => observer.observe(section));
+        }
+
+        function setupSmoothScrolling() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetElement = document.querySelector(this.getAttribute('href'));
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+        }
+
+        function setupStickyNav() {
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) navbar.classList.add('scrolled');
+                else navbar.classList.remove('scrolled');
+            });
+        }
+
+        function setupCustomCursor() {
+            const cursorDot = document.querySelector('.custom-cursor .dot');
+            const cursorCircle = document.querySelector('.custom-cursor .circle');
+            const cursorContainer = document.querySelector('.custom-cursor');
+            
+            window.addEventListener('mousemove', e => {
+                cursorDot.style.left = `${e.clientX}px`;
+                cursorDot.style.top = `${e.clientY}px`;
+                cursorCircle.style.left = `${e.clientX}px`;
+                cursorCircle.style.top = `${e.clientY}px`;
+            });
+            
+            document.querySelectorAll('a, button, .interactive-card, input, textarea').forEach(el => {
+                el.addEventListener('mouseenter', () => cursorContainer.classList.add('hover'));
+                el.addEventListener('mouseleave', () => cursorContainer.classList.remove('hover'));
+            });
+        }
+
+        function createSkillsChart() {
+            const ctx = document.getElementById('skillsChart');
+            if (!ctx) return;
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Statistics', 'Machine Learning', 'Data Visualization', 'Programming', 'Databases (SQL)'],
+                    datasets: [{
+                        label: 'Proficiency Level',
+                        data: [9, 8, 9, 8, 8],
+                        fill: true,
+                        backgroundColor: 'rgba(0, 180, 216, 0.2)',
+                        borderColor: 'rgb(0, 180, 216)',
+                        pointBackgroundColor: 'rgb(0, 180, 216)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(0, 180, 216)'
+                    }]
+                },
+                options: {
+                    elements: { line: { borderWidth: 2 } },
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(255, 255, 255, 0.2)' },
+                            grid: { color: 'rgba(255, 255, 255, 0.2)' },
+                            pointLabels: { color: '#fff', font: { size: 14, family: "'JetBrains Mono', monospace" } },
+                            ticks: { color: 'rgba(255, 255, 255, 0.7)', backdropColor: 'rgba(0, 0, 0, 0.5)', stepSize: 2 },
+                            suggestedMin: 0, suggestedMax: 10
+                        }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        function setupTerminal() {
+            const terminal = document.getElementById('terminal');
+            const terminalOutput = document.getElementById('terminal-output');
+            const terminalInput = document.getElementById('terminal-input');
+            const welcomeMessage = `Welcome to Andri Rizki's interactive terminal.\nType 'help' to see available commands.\n\n`;
+            
+            typeMessage(welcomeMessage, terminalOutput, () => terminalInput.focus());
+
+            terminalInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && this.value.trim() !== '') {
+                    const command = this.value.trim().toLowerCase();
+                    const prompt = `<div class="mt-2"><span class="prompt">guest@andririzki.dev:~$ </span><span>${command}</span></div>`;
+                    terminalOutput.insertAdjacentHTML('beforeend', prompt);
+                    
+                    handleCommand(command);
+                    this.value = '';
+                    terminal.scrollTop = terminal.scrollHeight;
+                }
+            });
+
+            function handleCommand(cmd) {
+                let output = '';
+                switch(cmd) {
+                    case 'help':
+                        output = `Available commands:\n  'about'    - Who is Andri Rizki?\n  'socials'  - List of social media profiles.\n  'email'    - Show contact email.\n  'projects' - View key projects.\n  'clear'    - Clear the terminal.`;
+                        break;
+                    case 'about':
+                        output = "Statistician & Data Scientist with 2+ years of experience in data mining, analysis, engineering, science, and visualization. Proficient in Python, SQL, R, Power BI, and Tableau.";
+                        break;
+                    case 'socials':
+                        output = `Connect with me:\n  <a href="https://www.linkedin.com/in/muhamad-andri-rizki-a7a394296" target="_blank" class="text-cyan-400 hover:underline">LinkedIn</a>\n  <a href="#" target="_blank" class="text-cyan-400 hover:underline">GitHub (soon)</a>`;
+                        break;
+                    case 'email':
+                        output = `You can reach me at: <a href="mailto:andririzkill@gmail.com" class="text-cyan-400 hover:underline">andririzkill@gmail.com</a>`;
+                        break;
+                    case 'projects':
+                         output = `Scrolling to projects section...`;
+                         document.getElementById('projects').scrollIntoView({ behavior: 'smooth' });
+                         break;
+                    case 'clear':
+                        terminalOutput.innerHTML = '';
+                        return;
+                    default:
+                        output = `Command not found: ${cmd}. Type 'help' for a list of commands.`;
+                }
+                typeMessage(output, terminalOutput);
+            }
+
+            function typeMessage(message, element, callback) {
+                const outputDiv = document.createElement('div');
+                outputDiv.className = 'command-output whitespace-pre-wrap';
+                element.appendChild(outputDiv);
+
+                let i = 0;
+                function type() {
+                    if (i < message.length) {
+                        outputDiv.innerHTML += message.charAt(i);
+                        i++;
+                        setTimeout(type, 10);
+                        terminal.scrollTop = terminal.scrollHeight;
+                    } else if (callback) {
+                        callback();
+                    }
+                }
+                type();
+            }
+        }
+        
+        function setupMagneticIcons() {
+            const icons = document.querySelectorAll('.magnetic-icon');
+            icons.forEach(icon => {
+                icon.addEventListener('mousemove', function(e) {
+                    const rect = this.getBoundingClientRect();
+                    const x = e.clientX - (rect.left + rect.width / 2);
+                    const y = e.clientY - (rect.top + rect.height / 2);
+                    this.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+                });
+                icon.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translate(0, 0)';
+                });
+            });
+        }
+    </script>
+</body>
+</html>
