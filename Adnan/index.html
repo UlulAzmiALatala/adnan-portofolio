@@ -10,6 +10,9 @@
     <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css" rel="stylesheet">
+    
     <style>
         @font-face {
             font-family: 'JetBrains Mono';
@@ -56,6 +59,28 @@
         .timeline-dot { box-shadow: 0 0 0 4px rgba(0, 180, 216, 0.3); animation: pulse 2.5s infinite; }
         @keyframes pulse { 50% { box-shadow: 0 0 0 8px rgba(0, 180, 216, 0); } }
         .magnetic-icon { transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+
+        /* [BARU] CSS Kustom untuk Kartu Sertifikat */
+        .certificate-card-image {
+            height: 12rem; /* 192px */
+            object-fit: cover;
+            object-position: top;
+            filter: grayscale(30%);
+            transition: filter 0.3s ease;
+        }
+        .interactive-card:hover .certificate-card-image {
+            filter: grayscale(0%);
+        }
+        .certificate-card-overlay {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            background: rgba(1, 10, 19, 0.7);
+            backdrop-filter: blur(5px);
+            padding: 0.5rem;
+            border-radius: 9999px;
+            border: 1px solid rgba(0, 180, 216, 0.3);
+        }
     </style>
 </head>
 <body class="bg-black text-white font-mono">
@@ -67,20 +92,30 @@
     
     <div class="relative z-20">
         <nav id="navbar" class="py-6 transition-all duration-300 z-50">
-            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center"><div class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-600">ANDRI<span class="text-white">RIZKI</span></div><ul class="hidden md:flex space-x-8"><li><a href="#about" class="hover:text-cyan-400 transition">About</a></li><li><a href="#experience" class="hover:text-cyan-400 transition">Experience</a></li><li><a href="#skills" class="hover:text-cyan-400 transition">Skills</a></li><li><a href="#projects" class="hover:text-cyan-400 transition">Projects</a></li><li><a href="#contact" class="hover:text-cyan-400 transition">Contact</a></li></ul></div>
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+                <div class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-600">ANDRI<span class="text-white">RIZKI</span></div>
+                <ul class="hidden md:flex space-x-8">
+                    <li><a href="#about" class="hover:text-cyan-400 transition">About</a></li>
+                    <li><a href="#experience" class="hover:text-cyan-400 transition">Experience</a></li>
+                    <li><a href="#skills" class="hover:text-cyan-400 transition">Skills</a></li>
+                    <li><a href="#projects" class="hover:text-cyan-400 transition">Projects</a></li>
+                    <li><a href="#certificates" class="hover:text-cyan-400 transition">Certificates</a></li>
+                    <li><a href="#contact" class="hover:text-cyan-400 transition">Contact</a></li>
+                </ul>
+            </div>
         </nav>
 
         <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <section class="min-h-screen flex items-center pt-16">
-                 <div class="w-full"><div class="text-cyan-400 mb-4 flex items-center"><div class="w-4 h-4 bg-cyan-400 mr-2 animate-pulse"></div><span class="font-mono">STATISTICIAN & DATA SCIENTIST</span></div><h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight font-mono">Muhamad Andri Rizki</h1><p class="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl font-mono"><span id="typing-effect"></span></p><a href="#experience" class="px-8 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-md font-medium hover:opacity-90 transition flex items-center w-max"><span>Explore My Work</span><i data-feather="chevron-down" class="ml-2 w-5 h-5 animate-bounce"></i></a></div>
+                <div class="w-full"><div class="text-cyan-400 mb-4 flex items-center"><div class="w-4 h-4 bg-cyan-400 mr-2 animate-pulse"></div><span class="font-mono">STATISTICIAN & DATA SCIENTIST</span></div><h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight font-mono">Muhamad Andri Rizki</h1><p class="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl font-mono"><span id="typing-effect"></span></p><a href="#experience" class="px-8 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-md font-medium hover:opacity-90 transition flex items-center w-max"><span>Explore My Work</span><i data-feather="chevron-down" class="ml-2 w-5 h-5 animate-bounce"></i></a></div>
             </section>
 
             <section id="about" class="py-20">
-                <div class="flex flex-col md:flex-row items-center"><div class="w-full md:w-1/2 mb-10 md:mb-0 md:pr-10"><div class="bg-gradient-to-br from-cyan-500/20 to-blue-600/20 p-1 mx-auto w-64 h-64 md:w-80 md:h-80 transition-all duration-300 ease-in-out hover:scale-105" style="clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);"><img src="https://i.ibb.co/qDQKQ26/profile-pic.png" alt="Muhamad Andri Rizki" class="w-full h-full object-cover" style="clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);"></div></div><div class="w-full md:w-1/2"><h2 class="text-3xl md:text-4xl font-bold mb-6 font-mono"><span class="text-cyan-400">0x01</span> About Me</h2><p class="text-gray-300 mb-6 font-mono">Seorang ahli statistik dengan pengalaman lebih dari 2 tahun dalam data mining, analisis, engineering, sains, dan visualisasi. Mahir dalam Python, SQL, R, Power BI, dan Tableau, saya membangun solusi data dan model AI untuk mendukung pengambilan keputusan yang lebih cerdas.</p><p class="text-gray-300 mb-6 font-mono">Pekerjaan saya didorong oleh pola pikir analitis yang kuat dan pengetahuan interdisipliner yang luas di berbagai domain sosial, ekonomi, dan teknologi.</p><a href="#" class="inline-flex items-center text-cyan-400 hover:text-cyan-300"><span>Download Full CV</span><i data-feather="download" class="ml-2 w-4 h-4"></i></a></div></div>
+                <div class="flex flex-col md:flex-row items-center"><div class="w-full md:w-1/2 mb-10 md:mb-0 md:pr-10"><div class="bg-gradient-to-br from-cyan-500/20 to-blue-600/20 p-1 mx-auto w-64 h-64 md:w-80 md:h-80 transition-all duration-300 ease-in-out hover:scale-105" style="clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);"><img src="adnan-profil.jpg" alt="Muhamad Andri Rizki" class="w-full h-full object-cover" style="clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);"></div></div><div class="w-full md:w-1/2"><h2 class="text-3xl md:text-4xl font-bold mb-6 font-mono"><span class="text-cyan-400">0x01</span> About Me</h2><p class="text-gray-300 mb-6 font-mono">Seorang ahli statistik dengan pengalaman lebih dari 2 tahun dalam data mining, analisis, engineering, sains, dan visualisasi. Mahir dalam Python, SQL, R, Power BI, dan Tableau, saya membangun solusi data dan model AI untuk mendukung pengambilan keputusan yang lebih cerdas.</p><p class="text-gray-300 mb-6 font-mono">Pekerjaan saya didorong oleh pola pikir analitis yang kuat dan pengetahuan interdisipliner yang luas di berbagai domain sosial, ekonomi, dan teknologi.</p><a href="#" class="inline-flex items-center text-cyan-400 hover:text-cyan-300"><span>Download Full CV</span><i data-feather="download" class="ml-2 w-4 h-4"></i></a></div></div>
             </section>
 
             <section id="experience" class="py-20">
-                 <h2 class="text-3xl md:text-4xl font-bold mb-16 text-center"><span class="text-cyan-400">~</span> Work Experience <span class="text-cyan-400">~</span></h2>
+                <h2 class="text-3xl md:text-4xl font-bold mb-16 text-center"><span class="text-cyan-400">~</span> Work Experience <span class="text-cyan-400">~</span></h2>
                 <div class="max-w-3xl mx-auto"><div class="relative"><div class="absolute left-4 top-0 h-full w-0.5 bg-cyan-400/30"></div><div class="relative pl-12 pb-12"><div class="absolute left-0 top-1 w-8 h-8 bg-black border-2 border-cyan-400 rounded-full flex items-center justify-center"><div class="w-4 h-4 bg-cyan-400 rounded-full timeline-dot"></div></div><p class="text-cyan-400 text-sm font-semibold">Juli 2024 - Saat ini</p><h3 class="text-xl font-bold mt-1">Process & Tools Specialist</h3><p class="text-gray-400 mb-3">PT, TEMANS</p><ul class="list-disc list-inside text-gray-300 space-y-1"><li>Membuat laporan dasbor menggunakan Power BI.</li><li>Memberikan pelatihan tentang cara menggunakan alat AI.</li><li>Mengembangkan dan mengotomatisasi sistem dokumen menggunakan AI.</li></ul></div><div class="relative pl-12 pb-12"><div class="absolute left-0 top-1 w-8 h-8 bg-black border-2 border-cyan-400 rounded-full flex items-center justify-center"><div class="w-4 h-4 bg-cyan-400 rounded-full timeline-dot"></div></div><p class="text-cyan-400 text-sm font-semibold">Januari 2023 - Saat ini</p><h3 class="text-xl font-bold mt-1">Freelancer Data</h3><p class="text-gray-400 mb-3">FASTWORK</p><ul class="list-disc list-inside text-gray-300 space-y-1"><li>Mengerjakan proyek Analisis Sentimen, Prediksi & Peramalan, dan SVM.</li></ul></div></div></div>
             </section>
 
@@ -90,8 +125,159 @@
             </section>
 
             <section id="projects" class="py-20">
-                <h2 class="text-3xl md:text-4xl font-bold mb-6"><span class="text-cyan-400">$</span> Notable Projects</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8"><div class="glassmorphic-card rounded-lg overflow-hidden interactive-card"><div class="h-48 bg-black/20 flex items-center justify-center"><i data-feather="message-circle" class="w-16 h-16 text-cyan-400"></i></div><div class="p-6"><h3 class="text-xl font-bold">Sentiment Analysis Engine</h3><p class="text-gray-400 my-4">Menganalisis ulasan pelanggan untuk mengukur sentimen publik dan memberikan wawasan untuk peningkatan produk.</p><div class="flex flex-wrap gap-2"><span class="text-xs bg-gray-800 px-2 py-1 rounded">Python</span><span class="text-xs bg-gray-800 px-2 py-1 rounded">NLTK</span></div></div></div><div class="glassmorphic-card rounded-lg overflow-hidden interactive-card"><div class="h-48 bg-black/20 flex items-center justify-center"><i data-feather="trending-up" class="w-16 h-16 text-cyan-400"></i></div><div class="p-6"><h3 class="text-xl font-bold">Sales Forecasting Model</h3><p class="text-gray-400 my-4">Membangun model peramalan deret waktu untuk memprediksi penjualan bulanan, membantu optimasi inventaris.</p><div class="flex flex-wrap gap-2"><span class="text-xs bg-gray-800 px-2 py-1 rounded">R</span><span class="text-xs bg-gray-800 px-2 py-1 rounded">Prophet</span></div></div></div></div>
+                <h2 class="text-3xl md:text-4xl font-bold mb-16 text-center"><span class="text-cyan-400">$</span> Notable Projects <span class="text-cyan-400">$</span></h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                    <div class="glassmorphic-card rounded-lg overflow-hidden interactive-card flex flex-col">
+                        <img src="project-adnan/sentiment-analysis.jpg" alt="Sentiment Analysis Project" class="w-full h-48 object-cover">
+                        <div class="p-6 flex flex-col flex-grow">
+                            <h3 class="text-xl font-bold">Sentiment Analysis on Reviews</h3>
+                            <p class="text-gray-400 my-4 flex-grow">Menganalisis ulasan pelanggan dari Google Maps untuk mengukur sentimen publik dan memberikan wawasan untuk peningkatan produk.</p>
+                            <div class="flex flex-wrap gap-2 mt-auto">
+                                <span class="text-xs bg-gray-800 px-2 py-1 rounded">Python</span>
+                                <span class="text-xs bg-gray-800 px-2 py-1 rounded">NLTK</span>
+                                <span class="text-xs bg-gray-800 px-2 py-1 rounded">Scikit-learn</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glassmorphic-card rounded-lg overflow-hidden interactive-card flex flex-col">
+                        <img src="project-adnan/sales-forecasting.jpg" alt="Sales Forecasting Project" class="w-full h-48 object-cover">
+                        <div class="p-6 flex flex-col flex-grow">
+                            <h3 class="text-xl font-bold">Sales Growth Forecasting Model</h3>
+                            <p class="text-gray-400 my-4 flex-grow">Membangun model peramalan deret waktu untuk memprediksi penjualan bulanan, membantu optimasi inventaris dan strategi pemasaran.</p>
+                            <div class="flex flex-wrap gap-2 mt-auto">
+                                <span class="text-xs bg-gray-800 px-2 py-1 rounded">R</span>
+                                <span class="text-xs bg-gray-800 px-2 py-1 rounded">Prophet</span>
+                                <span class="text-xs bg-gray-800 px-2 py-1 rounded">Time Series</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glassmorphic-card rounded-lg overflow-hidden interactive-card flex flex-col">
+                        <img src="project-adnan/nlp-chatbot.jpg" alt="NLP Chatbot Project" class="w-full h-48 object-cover">
+                        <div class="p-6 flex flex-col flex-grow">
+                            <h3 class="text-xl font-bold">Conversational AI Chatbot</h3>
+                            <p class="text-gray-400 my-4 flex-grow">Merancang chatbot berbasis NLP yang mampu memahami dan merespons pertanyaan pengguna secara natural untuk meningkatkan interaksi pelanggan.</p>
+                            <div class="flex flex-wrap gap-2 mt-auto">
+                                <span class="text-xs bg-gray-800 px-2 py-1 rounded">NLP</span>
+                                <span class="text-xs bg-gray-800 px-2 py-1 rounded">Python</span>
+                                <span class="text-xs bg-gray-800 px-2 py-1 rounded">TensorFlow</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glassmorphic-card rounded-lg overflow-hidden interactive-card flex flex-col">
+                        <img src="project-adnan/ann-decision-maker.jpg" alt="ANN Decision Maker Project" class="w-full h-48 object-cover">
+                        <div class="p-6 flex flex-col flex-grow">
+                            <h3 class="text-xl font-bold">ANN for Decision Making</h3>
+                            <p class="text-gray-400 my-4 flex-grow">Mengimplementasikan Artificial Neural Network dengan algoritma backpropagation untuk menciptakan sistem pendukung keputusan yang cerdas.</p>
+                            <div class="flex flex-wrap gap-2 mt-auto">
+                                <span class="text-xs bg-gray-800 px-2 py-1 rounded">ANN</span>
+                                <span class="text-xs bg-gray-800 px-2 py-1 rounded">Backpropagation</span>
+                                <span class="text-xs bg-gray-800 px-2 py-1 rounded">Keras</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glassmorphic-card rounded-lg overflow-hidden interactive-card flex flex-col">
+                        <img src="project-adnan/stock-forecasting-rnn.jpg" alt="Stock Forecasting with RNN Project" class="w-full h-48 object-cover">
+                        <div class="p-6 flex flex-col flex-grow">
+                            <h3 class="text-xl font-bold">Stock Price Forecasting with RNN</h3>
+                            <p class="text-gray-400 my-4 flex-grow">Mengaplikasikan Deep Learning menggunakan Recurrent Neural Network (RNN) untuk memprediksi pergerakan harga saham secara akurat.</p>
+                            <div class="flex flex-wrap gap-2 mt-auto">
+                                <span class="text-xs bg-gray-800 px-2 py-1 rounded">Deep Learning</span>
+                                <span class="text-xs bg-gray-800 px-2 py-1 rounded">RNN</span>
+                                <span class="text-xs bg-gray-800 px-2 py-1 rounded">Python</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glassmorphic-card rounded-lg overflow-hidden interactive-card flex flex-col">
+                        <img src="project-adnan/knn-classification.jpg" alt="K-NN Image Classification Project" class="w-full h-48 object-cover">
+                        <div class="p-6 flex flex-col flex-grow">
+                            <h3 class="text-xl font-bold">Potato Condition Classification</h3>
+                            <p class="text-gray-400 my-4 flex-grow">Membangun sistem klasifikasi gambar menggunakan algoritma K-NN untuk mengidentifikasi dan memisahkan kondisi kentang (baik/buruk).</p>
+                            <div class="flex flex-wrap gap-2 mt-auto">
+                                <span class="text-xs bg-gray-800 px-2 py-1 rounded">Machine Learning</span>
+                                <span class="text-xs bg-gray-800 px-2 py-1 rounded">K-NN</span>
+                                <span class="text-xs bg-gray-800 px-2 py-1 rounded">OpenCV</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                <div class="text-center mt-16">
+                    <a href="#" class="text-cyan-400 border border-cyan-400/50 py-3 px-8 rounded-md hover:bg-cyan-400/10 transition">
+                        <span>View More on GitHub</span>
+                        <i data-feather="arrow-right" class="inline-block ml-2 w-4 h-4"></i>
+                    </a>
+                </div>
+            </section>
+            
+            <section id="certificates" class="py-20">
+                <h2 class="text-3xl md:text-4xl font-bold mb-16 text-center"><span class="text-cyan-400">#</span> Certificates & Achievements <span class="text-cyan-400">#</span></h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                    <a href="sertifikat-adnan/Data Analytics for Sustainable Development in Society 5.0.jpg" data-lightbox="certificates" data-title="Juara 2 Infographics Challenge - Universitas Islam Bandung" class="block group">
+                        <div class="glassmorphic-card rounded-lg overflow-hidden interactive-card h-full relative">
+                            <img src="sertifikat-adnan/Data Analytics for Sustainable Development in Society 5.0.jpg" alt="Sertifikat Juara 2 Infographics" class="w-full certificate-card-image">
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-white">Juara 2 Infographics</h3>
+                                <p class="text-gray-400 mt-2">Universitas Islam Bandung</p>
+                            </div>
+                            <div class="certificate-card-overlay"><i data-feather="eye" class="w-5 h-5 text-cyan-300"></i></div>
+                        </div>
+                    </a>
+
+                    <a href="sertifikat-adnan/Visualisai Data - Dicoding.jpg" data-lightbox="certificates" data-title="Belajar Dasar Visualisasi Data - Dicoding" class="block group">
+                        <div class="glassmorphic-card rounded-lg overflow-hidden interactive-card h-full relative">
+                            <img src="sertifikat-adnan/Visualisai Data - Dicoding.jpg" alt="Sertifikat Visualisasi Data" class="w-full certificate-card-image">
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-white">Dasar Visualisasi Data</h3>
+                                <p class="text-gray-400 mt-2">Dicoding Indonesia</p>
+                            </div>
+                            <div class="certificate-card-overlay"><i data-feather="eye" class="w-5 h-5 text-cyan-300"></i></div>
+                        </div>
+                    </a>
+
+                    <a href="sertifikat-adnan/Pemrograman Python - Dicoding.jpg" data-lightbox="certificates" data-title="Memulai Pemrograman dengan Python - Dicoding" class="block group">
+                        <div class="glassmorphic-card rounded-lg overflow-hidden interactive-card h-full relative">
+                            <img src="sertifikat-adnan/Pemrograman Python - Dicoding.jpg" alt="Sertifikat Pemrograman Python" class="w-full certificate-card-image">
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-white">Pemrograman Python</h3>
+                                <p class="text-gray-400 mt-2">Dicoding Indonesia</p>
+                            </div>
+                            <div class="certificate-card-overlay"><i data-feather="eye" class="w-5 h-5 text-cyan-300"></i></div>
+                        </div>
+                    </a>
+
+                    <a href="sertifikat-adnan/Toefl.pdf" target="_blank" rel="noopener noreferrer" class="block group">
+                        <div class="glassmorphic-card rounded-lg overflow-hidden interactive-card h-full relative">
+                            <img src="sertifikat-adnan/Toefl.jpg" alt="Sertifikat TOEFL ITP" class="w-full certificate-card-image">
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-white">TOEFL ITP Score</h3>
+                                <p class="text-gray-400 mt-2">ETS Global</p>
+                            </div>
+                            <div class="certificate-card-overlay"><i data-feather="file-text" class="w-5 h-5 text-cyan-300"></i></div>
+                        </div>
+                    </a>
+
+                    <a href="sertifikat-adnan/Titik Nol Course.pdf" target="_blank" rel="noopener noreferrer" class="block group">
+                        <div class="glassmorphic-card rounded-lg overflow-hidden interactive-card h-full relative">
+                             <img src="sertifikat-adnan/Titik Nol Course.jpg" alt="Sertifikat Titik Nol English" class="w-full certificate-card-image">
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-white">Advanced English</h3>
+                                <p class="text-gray-400 mt-2">Titik Nol English Course</p>
+                            </div>
+                            <div class="certificate-card-overlay"><i data-feather="file-text" class="w-5 h-5 text-cyan-300"></i></div>
+                        </div>
+                    </a>
+
+                </div>
             </section>
             
             <section id="contact" class="py-20">
@@ -138,6 +324,9 @@
         </footer>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const preloader = document.querySelector('.preloader');
@@ -156,6 +345,12 @@
             createSkillsChart();
             setupTerminal();
             setupMagneticIcons();
+
+            // [BARU] Inisialisasi Lightbox
+            lightbox.option({
+              'resizeDuration': 200,
+              'wrapAround': true
+            })
         });
 
         function createBinaryRain() {
@@ -277,7 +472,7 @@
                 let output = '';
                 switch(cmd) {
                     case 'help':
-                        output = `Available commands:\n  'about'    - Who is Andri Rizki?\n  'socials'  - List of social media profiles.\n  'email'    - Show contact email.\n  'projects' - View key projects.\n  'clear'    - Clear the terminal.`;
+                        output = `Available commands:\n  'about'     - Who is Andri Rizki?\n  'socials'   - List of social media profiles.\n  'email'     - Show contact email.\n  'projects'  - View key projects.\n  'clear'     - Clear the terminal.`;
                         break;
                     case 'about':
                         output = "Statistician & Data Scientist with 2+ years of experience in data mining, analysis, engineering, science, and visualization. Proficient in Python, SQL, R, Power BI, and Tableau.";
@@ -289,9 +484,9 @@
                         output = `You can reach me at: <a href="mailto:andririzkill@gmail.com" class="text-cyan-400 hover:underline">andririzkill@gmail.com</a>`;
                         break;
                     case 'projects':
-                         output = `Scrolling to projects section...`;
-                         document.getElementById('projects').scrollIntoView({ behavior: 'smooth' });
-                         break;
+                          output = `Scrolling to projects section...`;
+                          document.getElementById('projects').scrollIntoView({ behavior: 'smooth' });
+                          break;
                     case 'clear':
                         terminalOutput.innerHTML = '';
                         return;
