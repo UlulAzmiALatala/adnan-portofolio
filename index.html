@@ -351,10 +351,13 @@
         </section>
 
         <section id="about" class="py-20">
-          <div class="flex flex-col md:flex-row items-center">
-            <div class="w-full md:w-1/2 mb-10 md:mb-0 md:pr-10">
+          <div class="flex flex-col md:flex-row md:flex-wrap items-start">
+            <!-- Gambar profil -->
+            <div
+              class="w-full md:w-1/2 mb-10 md:mb-0 md:pr-10 flex justify-center"
+            >
               <div
-                class="bg-gradient-to-br from-cyan-500/20 to-blue-600/20 p-1 mx-auto w-64 h-64 md:w-80 md:h-80 transition-all duration-300 ease-in-out hover:scale-105"
+                class="bg-gradient-to-br from-cyan-500/20 to-blue-600/20 p-1 w-64 h-64 md:w-80 md:h-80 transition-all duration-300 ease-in-out hover:scale-105"
                 style="
                   clip-path: polygon(
                     50% 0%,
@@ -383,10 +386,13 @@
                 />
               </div>
             </div>
-            <div class="w-full md:w-1/2">
+
+            <!-- Deskripsi -->
+            <div class="w-full md:w-1/2 text-justify">
               <h2 class="text-3xl md:text-4xl font-bold mb-6 font-mono">
                 <span class="text-cyan-400">0x01</span> About Me
               </h2>
+
               <p class="text-gray-300 mb-6 font-mono">
                 I am a statistician with over 2 years of professional experience
                 in the logistics and supply chain sector, with a strong
@@ -405,17 +411,20 @@
                 contribute effectively to data-driven decision-making across
                 business functions.
               </p>
+
               <p class="text-gray-300 mb-6 font-mono">
                 My work is driven by a strong analytical mindset and broad
                 interdisciplinary knowledge across various social, economic, and
                 technological domains.
               </p>
+
               <a
                 href="MUHAMAD ANDRI RIZKI_CV.pdf"
                 class="inline-flex items-center text-cyan-400 hover:text-cyan-300"
-                ><span>Download Full CV</span
-                ><i data-feather="download" class="ml-2 w-4 h-4"></i
-              ></a>
+              >
+                <span>Download Full CV</span>
+                <i data-feather="download" class="ml-2 w-4 h-4"></i>
+              </a>
             </div>
           </div>
         </section>
